@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  playit:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: playit-1password:latest
+    container_name: playit-agent
+    network_mode: host
+    restart: unless-stopped
+    environment:
+      # 1Password Service Account Token
+      # This should be set in your .env file or exported in your shell
+      - OP_SERVICE_ACCOUNT_TOKEN=${OP_SERVICE_ACCOUNT_TOKEN}
+
+      # Optional: Override the default secret reference
+      # Default: "op://API Dev/Playit/credential"
+      - PLAYIT_SECRET_REFERENCE=${PLAYIT_SECRET_REFERENCE:-op://API Prod/Playit/credential}
+
+    ports:
+      - "8080:8080"
+
+    volumes:
+      # Persist playit configuration and data
+      - playit-data:/root/.playit
+      # Optional: Mount custom playit configuration
+      # - ./playit-config.toml:/root/.playit/config.toml:ro
+
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  playit-data:
+    driver: local

@@ -1,0 +1,17 @@
+# Add .env file to gitignore to prevent committing secrets
+.env
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Docker volumes
+playit-data/
+
+# Playit configuration (if mounted locally)
+playit-config.toml
+.playit/
+
+# Logs
+*.log
