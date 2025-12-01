@@ -110,9 +110,13 @@ def main():
         sys.exit(1)
     
     # Step 2: Fetch the secret
+    # Auto-detect: if user is "agent", use API Dev, otherwise use API Prod
+    current_user = os.environ.get("USER", "unknown")
+    default_reference = "op://API Dev/Playit/credential" if current_user == "agent" else "op://API Prod/Playit/credential"
+    
     secret_reference = os.environ.get(
         "PLAYIT_SECRET_REFERENCE",
-        "op://API Dev/Playit/credential"
+        default_reference
     )
     
     secret_key = fetch_secret(secret_reference)

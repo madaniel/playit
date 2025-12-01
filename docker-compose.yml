@@ -14,9 +14,13 @@ services:
       # This should be set in your .env file or exported in your shell
       - OP_SERVICE_ACCOUNT_TOKEN=${OP_SERVICE_ACCOUNT_TOKEN}
 
-      # Optional: Override the default secret reference
-      # Default: "op://API Dev/Playit/credential"
-      - PLAYIT_SECRET_REFERENCE=${PLAYIT_SECRET_REFERENCE:-op://API Prod/Playit/credential}
+      # Pass the current user to enable automatic secret reference selection
+      # User "agent" → "op://API Dev/Playit/credential"
+      # Other users → "op://API Prod/Playit/credential"
+      - USER=${USER}
+
+      # Optional: Override the auto-detected secret reference
+      - PLAYIT_SECRET_REFERENCE=${PLAYIT_SECRET_REFERENCE}
 
     ports:
       - "8080:8080"
